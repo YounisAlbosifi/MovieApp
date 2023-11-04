@@ -1,0 +1,280 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:movie_app/Main_Flow/moviesMainPage.dart';
+import '../Helper_Widgets/filterPicture.dart';
+import '../classes/movieObject.dart';
+import '../components/Text.dart';
+import '../Helper_Widgets/movieAPI.dart';
+import '../constants.dart';
+
+class MovieFilter extends StatefulWidget {
+  const MovieFilter({super.key});
+  @override
+  State<MovieFilter> createState() => _MovieFilterState();
+}
+
+class _MovieFilterState extends State<MovieFilter> {
+  // -------------------------------------------------------------
+  List<String> selectedGenres = [];
+  String? selectedLanguage;
+  double selectedRating = 3.0;
+  bool isSelectedLanguage = false;
+  bool isRunTimeSelected = false;
+  String? runtime;
+  bool showYearSlider = false;
+  double selectedYear = DateTime.now().year.toDouble();
+
+
+  void toggleLanguageSelection(String language){
+    setState(() {
+      selectedLanguage = language;
+      if(!isSelectedLanguage){
+        isSelectedLanguage = true;
+        print("Selected Language: $selectedLanguage");
+      }
+      else if(isSelectedLanguage){
+        isSelectedLanguage = false;
+        print("Unselected Language: $selectedLanguage");
+      }
+    });
+  }
+
+  void toggleRunTime(String choice){
+    setState(() {
+      if(!isRunTimeSelected){
+        isRunTimeSelected = true;
+      }
+      else if(isRunTimeSelected){
+        isRunTimeSelected = false;
+      }
+      if(isRunTimeSelected == false) runtime = null;
+      else runtime = choice;
+    });
+  }
+
+
+
+  void toggleGenreSelection(String genre) {
+    setState(() {
+      if (selectedGenres.contains(genre)) {
+        selectedGenres.remove(genre);
+      } else {
+        selectedGenres.add(genre);
+      }
+    });
+  }
+
+  // -------------------------------------------------------------
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(),
+        body: SingleChildScrollView(
+            physics: const ScrollPhysics(),
+            child: Column(
+              children: [
+                Container(
+                  width: double.infinity,
+                  height: 200,
+                  child: ListView.builder(
+                    itemCount: genres.length,
+                    itemBuilder: (context, index) {
+                      print(genres[index]);
+                      return FilterPicture(
+                        imagePath: selectedGenres.contains(genres[index]) ? "assets/${genres[index]}_selected.png" : "assets/${genres[index]}.png",
+                        genreName: genres[index],
+                        onTap: () {
+                          toggleGenreSelection(genres[index]);
+                        },
+                        isSelected: selectedGenres.contains(genres[index]), // Pass isSelected flag for ui changes (YOUNIS)
+                      );
+                    },
+                    scrollDirection: Axis.horizontal,
+                  ),
+                ),
+                SizedBox(height: 80,),
+                Container(
+                  width: double.infinity,
+                  height: 200,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: [
+                      FilterPicture(
+                        imagePath: "assets/USA.png",
+                        onTap: (){
+                          toggleLanguageSelection("en");
+                        },
+                        isSelected: selectedLanguage == "en",
+                      ),
+                      FilterPicture(
+                        imagePath: "assets/ARABIC.jpg",
+                        onTap: (){
+                          toggleLanguageSelection("ar");
+                        },
+                        isSelected: selectedLanguage == "ar",
+                      ),
+                      FilterPicture(
+                        imagePath: "assets/KO.png",
+                        onTap: (){
+                          toggleLanguageSelection("ko");
+                        },
+                        isSelected: selectedLanguage == "ko",
+                      ),
+                      FilterPicture(
+                        imagePath: "assets/INDIA.png",
+                        onTap: (){
+                          toggleLanguageSelection("hi");
+                        },
+                        isSelected: selectedLanguage == "hi",
+                      ),
+                      FilterPicture(
+                        imagePath: "assets/JAPAN.png",
+                        onTap: (){
+                          toggleLanguageSelection("ja");
+                        },
+                        isSelected: selectedLanguage == "ja",
+                      ),
+                      FilterPicture(
+                        imagePath: "assets/FRANCE.png",
+                        onTap: (){
+                          toggleLanguageSelection("fr");
+                        },
+                        isSelected: selectedLanguage == "fr",
+                      ),
+                      FilterPicture(
+                        imagePath: "assets/SPAIN.png",
+                        onTap: (){
+                          toggleLanguageSelection("es");
+                        },
+                        isSelected: selectedLanguage == "es",
+
+                      ),
+                      FilterPicture(
+                        imagePath: "assets/OTHER.jpg",
+                        onTap: (){
+                          toggleLanguageSelection("other");
+                        },
+                        isSelected: selectedLanguage == "other",
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 15,),
+                Container(
+                  width: double.infinity,
+                  height: 50,
+                  child: Slider(
+                    value: selectedRating,
+                    min: 0.0,
+                    max: 9.0,
+                    divisions: 90,
+                    onChanged: (value) {
+                      setState(() {
+                        selectedRating = value;
+                      });
+                    },
+                  )
+                ),
+                CustomText("Movies Above: ${selectedRating.toStringAsFixed(1)}"),
+                SizedBox(height: 20,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // "long", "normal", "short"
+                    ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: runtime == "long" ? Colors.blue : Colors.white, shape: const StadiumBorder()),
+                        onPressed: ()  {
+                          toggleRunTime("long");
+                        },
+                        child: const CustomText(
+                          "Long",
+                          size: 24,
+                          color: Colors.black,
+                        )),
+                    ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: runtime == "normal" ? Colors.blue : Colors.white, shape: const StadiumBorder()),
+                        onPressed: ()  {
+                          toggleRunTime("normal");
+                        },
+                        child: const CustomText(
+                          "Normal",
+                          size: 24,
+                          color: Colors.black,
+                        )),
+                    ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: runtime == "short" ? Colors.blue : Colors.white, shape: const StadiumBorder()),
+                        onPressed: ()  {
+                          toggleRunTime("short");
+                        },
+                        child: const CustomText(
+                          "Short",
+                          size: 24,
+                          color: Colors.black,
+                        )),
+
+                  ],
+                ),
+                SizedBox(height: 20,),
+                ElevatedButton(
+                    onPressed: (){
+                      setState(() {
+                        if(!showYearSlider){
+                          showYearSlider = true;
+                        }
+                        else if(showYearSlider){
+                          showYearSlider = false;
+                        }
+                      });
+                    },
+                    child: Text("Click to choose year")),
+                SizedBox(height: 15,),
+                if(showYearSlider)  Column(
+                  children: [
+                    Slider(
+                      value: selectedYear,
+                      min: 1920,
+                      max: DateTime.now().year.toDouble(),
+                      divisions: DateTime.now().year-1920,
+                      onChanged: (value) {
+                        setState(() {
+                          selectedYear = value;
+                        });
+                      },
+                    ),
+                    SizedBox(height: 15,),
+                    CustomText("Released in: ${selectedYear.toInt()}"),
+                  ],
+                ),
+                SizedBox(height: 15,),
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue, shape: const StadiumBorder()),
+                    onPressed: (){
+                      Map<String, dynamic> appliedFilters = {
+                        "year": showYearSlider ? selectedYear.toInt() : null,
+                        "withGenres": selectedGenres,
+                        "voteAverage": selectedRating,
+                        "runtimeChoice": runtime,
+                        "language" : selectedLanguage,
+                      };
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) {
+                          return MovieMainPage(appliedFilters: appliedFilters);
+                        },
+                      ));
+                    },
+                    child: const CustomText(
+                      "Search",
+                      size: 24,
+                      color: Colors.white,
+                    )),
+              ],
+            ),
+            ),
+        );
+    }
+}
