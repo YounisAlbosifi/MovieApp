@@ -7,9 +7,7 @@ class Movie {
   factory Movie.fromJson(Map<String, dynamic> json) {
     return Movie(
       page: json['page'],
-      results: (json['results'] as List)
-          .map((resultJson) => MovieResult.fromJson(resultJson))
-          .toList(),
+      results: (json['results'] as List).map((resultJson) => MovieResult.fromJson(resultJson)).toList(),
     );
   }
 }
@@ -27,7 +25,7 @@ class MovieResult {
   final bool video;
   final double voteAverage;
   final int voteCount;
-  final String? backdrop_path;
+  final String? backdropPath;
 
   MovieResult({
     required this.adult,
@@ -42,7 +40,7 @@ class MovieResult {
     required this.video,
     required this.voteAverage,
     required this.voteCount,
-    this.backdrop_path
+    this.backdropPath
   });
 
   factory MovieResult.fromJson(Map<String, dynamic> json) {
@@ -59,7 +57,7 @@ class MovieResult {
         video: json['video'],
         voteAverage: json['vote_average'].toDouble(),
         voteCount: json['vote_count'],
-        backdrop_path: json['backdrop_path'] ?? 'https://ih1.redbubble.net/image.980012480.5663/st,small,507x507-pad,600x600,f8f8f8.u3.jpg',
+        backdropPath: json['backdrop_path'] ?? 'https://ih1.redbubble.net/image.980012480.5663/st,small,507x507-pad,600x600,f8f8f8.u3.jpg',
     );
   }
 }

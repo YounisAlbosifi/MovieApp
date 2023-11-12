@@ -11,7 +11,7 @@ class MovieCard extends StatelessWidget {
   final double voteAverage;
   final int voteCount;
   final String posterPath;
-  final List genre_ids;
+  final List genreIds;
 
   MovieCard({
     required this.title,
@@ -21,7 +21,7 @@ class MovieCard extends StatelessWidget {
     required this.voteAverage,
     required this.voteCount,
     required this.posterPath,
-    required this.genre_ids,
+    required this.genreIds,
   });
 
   @override
@@ -81,7 +81,7 @@ class MovieCard extends StatelessWidget {
                   style: const TextStyle(fontSize: 21),
                 ),
                 Text(
-                  'Genres: ${genre_ids == 0 ? "Unknown" : genre_ids
+                  'Genres: ${genreIds == 0 ? "Unknown" : genreIds
                       .map((id) => IdGenreMap[id])
                       .where((genre) => genre != null)
                       .toList().join(", ")}',
@@ -104,7 +104,7 @@ class MovieCard extends StatelessWidget {
             ),
           ),
           Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: Colors.lightBlue,
             ),
             padding: const EdgeInsets.all(12),
@@ -114,7 +114,7 @@ class MovieCard extends StatelessWidget {
                   'Click For More Details',
                   style: GoogleFonts.poppins(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
                 ),
-                Icon(Icons.arrow_forward, color: Colors.white),
+                const Icon(Icons.arrow_forward, color: Colors.white),
               ],
             ),
           ),

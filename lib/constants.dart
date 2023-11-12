@@ -38,6 +38,7 @@ List<String> genres = [
   'Romance',
   'Science_Fiction'
 ];
+
 Future<dynamic> getJson({required String url}) async {
   http.Response res = await http.get(Uri.parse(url));
 

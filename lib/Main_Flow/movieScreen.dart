@@ -65,7 +65,6 @@ class MovieScreen extends StatelessWidget {
             const SizedBox(
               height: 40,
             ),
-
             Container(
                 alignment: Alignment.topLeft,
                 padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -92,7 +91,6 @@ class MovieScreen extends StatelessWidget {
             ),
 
             // SEARCH BUTTON
-
             ElevatedButton(
                 style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blue, shape: const StadiumBorder()),

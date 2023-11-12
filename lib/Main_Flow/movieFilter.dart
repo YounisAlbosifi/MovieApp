@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_app/Main_Flow/moviesMainPage.dart';
 import '../Helper_Widgets/filterPicture.dart';
-import '../classes/movieObject.dart';
+import '../classes/movieResult.dart';
 import '../components/Text.dart';
 import '../Helper_Widgets/movieAPI.dart';
 import '../constants.dart';
@@ -22,6 +22,8 @@ class _MovieFilterState extends State<MovieFilter> {
   bool isRunTimeSelected = false;
   String? runtime;
   bool showYearSlider = false;
+  bool showRating = false;
+  bool selectLength = false;
   double selectedYear = DateTime.now().year.toDouble();
 
 
@@ -93,7 +95,7 @@ class _MovieFilterState extends State<MovieFilter> {
                     scrollDirection: Axis.horizontal,
                   ),
                 ),
-                SizedBox(height: 80,),
+                const SizedBox(height: 80,),
                 Container(
                   width: double.infinity,
                   height: 200,
@@ -160,25 +162,53 @@ class _MovieFilterState extends State<MovieFilter> {
                     ],
                   ),
                 ),
-                SizedBox(height: 15,),
-                Container(
-                  width: double.infinity,
-                  height: 50,
-                  child: Slider(
-                    value: selectedRating,
-                    min: 0.0,
-                    max: 9.0,
-                    divisions: 90,
-                    onChanged: (value) {
+                const SizedBox(height: 15,),
+                ElevatedButton(
+                    onPressed: (){
                       setState(() {
-                        selectedRating = value;
+                        if(!showRating){
+                          showRating = true;
+                        }
+                        else if(showRating){
+                          showRating = false;
+                        }
                       });
                     },
-                  )
+                    child: showRating == false ? const Text("Select rating") : const Text("Unselect rating")),
+                if(showRating) Column(
+                  children: [
+                    Container(
+                      width: double.infinity,
+                      height: 50,
+                      child: Slider(
+                        value: selectedRating,
+                        min: 0.0,
+                        max: 9.0,
+                        divisions: 90,
+                        onChanged: (value) {
+                          setState(() {
+                            selectedRating = value;
+                          });
+                        },
+                      )
+                    ),
+                    CustomText("Movies Above: ${selectedRating.toStringAsFixed(1)}"),
+                  ],
                 ),
-                CustomText("Movies Above: ${selectedRating.toStringAsFixed(1)}"),
-                SizedBox(height: 20,),
-                Row(
+                const SizedBox(height: 20),
+                ElevatedButton(
+                    onPressed: (){
+                      setState(() {
+                        if(!selectLength){
+                          selectLength = true;
+                        }
+                        else if(selectLength){
+                          selectLength = false;
+                        }
+                      });
+                    },
+                    child: selectLength == false ? const Text("Select length") : const Text("Unselect length")),
+                if(selectLength) Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     // "long", "normal", "short"
@@ -218,7 +248,7 @@ class _MovieFilterState extends State<MovieFilter> {
 
                   ],
                 ),
-                SizedBox(height: 20,),
+                const SizedBox(height: 20,),
                 ElevatedButton(
                     onPressed: (){
                       setState(() {
@@ -230,9 +260,9 @@ class _MovieFilterState extends State<MovieFilter> {
                         }
                       });
                     },
-                    child: Text("Click to choose year")),
-                SizedBox(height: 15,),
-                if(showYearSlider)  Column(
+                    child: showYearSlider == false ? const Text("Select year") : const Text("Unselect year")),
+                const SizedBox(height: 15,),
+                if(showYearSlider) Column(
                   children: [
                     Slider(
                       value: selectedYear,
@@ -245,11 +275,11 @@ class _MovieFilterState extends State<MovieFilter> {
                         });
                       },
                     ),
-                    SizedBox(height: 15,),
+                    const SizedBox(height: 15,),
                     CustomText("Released in: ${selectedYear.toInt()}"),
                   ],
                 ),
-                SizedBox(height: 15,),
+                const SizedBox(height: 15,),
                 ElevatedButton(
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blue, shape: const StadiumBorder()),

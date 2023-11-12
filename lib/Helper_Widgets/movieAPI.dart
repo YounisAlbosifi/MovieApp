@@ -11,6 +11,7 @@ class Api {
     this.voteAverage,
     this.runtimeChoice,
     this.language,
+    this.searchName,
     required this.page
   });
 
@@ -18,10 +19,9 @@ class Api {
   int? year; // On hold
   List<String>? withGenres; // DONE
   double? voteAverage; // DONE
-  String? runtimeChoice; // On hold
+  String? runtimeChoice;
+  String? searchName;// On hold
   int page;
-
-
 
   String CallMovieFilterApi(){ /// THIS WILL RETURN A URL
     var string = StringBuffer();
@@ -71,8 +71,7 @@ class Api {
       }
     }
     String finalUrl = string.toString();
-
-    print("final url is: ${finalUrl}");
+    print("final url is: $finalUrl");
     return finalUrl;
   }
 }
