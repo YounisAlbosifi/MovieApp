@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:movie_app/Main_Flow/moviesMainPage.dart';
-import '../Helper_Widgets/filterPicture.dart';
-import '../classes/movieResult.dart';
+import 'package:movie_app/Screens/movieFilterResults.dart';
+import '../Classes/movieResult.dart';
+import '../Helpers/filterPicture.dart';
+import '../Helpers/movieAPI.dart';
 import '../components/Text.dart';
-import '../Helper_Widgets/movieAPI.dart';
 import '../constants.dart';
 
 class MovieFilter extends StatefulWidget {
@@ -25,58 +25,19 @@ class _MovieFilterState extends State<MovieFilter> {
   bool showRating = false;
   bool selectLength = false;
   double selectedYear = DateTime.now().year.toDouble();
-
-
-  void toggleLanguageSelection(String language){
-    setState(() {
-      selectedLanguage = language;
-      if(!isSelectedLanguage){
-        isSelectedLanguage = true;
-        print("Selected Language: $selectedLanguage");
-      }
-      else if(isSelectedLanguage){
-        isSelectedLanguage = false;
-        print("Unselected Language: $selectedLanguage");
-      }
-    });
-  }
-
-  void toggleRunTime(String choice){
-    setState(() {
-      if(!isRunTimeSelected){
-        isRunTimeSelected = true;
-      }
-      else if(isRunTimeSelected){
-        isRunTimeSelected = false;
-      }
-      if(isRunTimeSelected == false) runtime = null;
-      else runtime = choice;
-    });
-  }
-
-
-
-  void toggleGenreSelection(String genre) {
-    setState(() {
-      if (selectedGenres.contains(genre)) {
-        selectedGenres.remove(genre);
-      } else {
-        selectedGenres.add(genre);
-      }
-    });
-  }
-
   // -------------------------------------------------------------
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          title: const Text("Filter Screen")
+        ),
         body: SingleChildScrollView(
             physics: const ScrollPhysics(),
             child: Column(
               children: [
-                Container(
+                SizedBox(
                   width: double.infinity,
                   height: 200,
                   child: ListView.builder(
@@ -96,7 +57,7 @@ class _MovieFilterState extends State<MovieFilter> {
                   ),
                 ),
                 const SizedBox(height: 80,),
-                Container(
+                SizedBox(
                   width: double.infinity,
                   height: 200,
                   child: ListView(
@@ -177,7 +138,7 @@ class _MovieFilterState extends State<MovieFilter> {
                     child: showRating == false ? const Text("Select rating") : const Text("Unselect rating")),
                 if(showRating) Column(
                   children: [
-                    Container(
+                    SizedBox(
                       width: double.infinity,
                       height: 50,
                       child: Slider(
@@ -283,7 +244,7 @@ class _MovieFilterState extends State<MovieFilter> {
                 ElevatedButton(
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blue, shape: const StadiumBorder()),
-                    onPressed: (){
+                    onPressed: () async{
                       Map<String, dynamic> appliedFilters = {
                         "year": showYearSlider ? selectedYear.toInt() : null,
                         "withGenres": selectedGenres,
@@ -291,14 +252,29 @@ class _MovieFilterState extends State<MovieFilter> {
                         "runtimeChoice": runtime,
                         "language" : selectedLanguage,
                       };
+
+                      Api api = Api(
+                        year: appliedFilters['year'],
+                        withGenres: appliedFilters['withGenres'],
+                        voteAverage: appliedFilters["voteAverage"],
+                        runtimeChoice: appliedFilters['runtimeChoice'],
+                        language: appliedFilters['language'],
+                        page: 1,
+                      );
+
+                      List<MovieResult> movies = await api.CallMovieFilterApi();
+
                       Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) {
-                          return MovieMainPage(appliedFilters: appliedFilters);
+                          return movieFilterResults(
+                            appliedFilters: appliedFilters,
+                            movies: movies,
+                          );
                         },
                       ));
                     },
                     child: const CustomText(
-                      "Search",
+                      "Search in the filter screen",
                       size: 24,
                       color: Colors.white,
                     )),
@@ -307,4 +283,42 @@ class _MovieFilterState extends State<MovieFilter> {
             ),
         );
     }
+
+  void toggleLanguageSelection(String language){
+    setState(() {
+      selectedLanguage = language;
+      if(!isSelectedLanguage){
+        isSelectedLanguage = true;
+      }
+      else if(isSelectedLanguage){
+        isSelectedLanguage = false;
+      }
+    });
+  }
+
+  void toggleRunTime(String choice){
+    setState(() {
+      if(!isRunTimeSelected){
+        isRunTimeSelected = true;
+      }
+      else if(isRunTimeSelected){
+        isRunTimeSelected = false;
+      }
+      if(isRunTimeSelected == false) {
+        runtime = null;
+      } else {
+        runtime = choice;
+      }
+    });
+  }
+
+  void toggleGenreSelection(String genre) {
+    setState(() {
+      if (selectedGenres.contains(genre)) {
+        selectedGenres.remove(genre);
+      } else {
+        selectedGenres.add(genre);
+      }
+    });
+  }
 }

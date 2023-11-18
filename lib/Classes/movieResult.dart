@@ -45,19 +45,19 @@ class MovieResult {
 
   factory MovieResult.fromJson(Map<String, dynamic> json) {
     return MovieResult(
-        adult: json['adult'],
-        genreIds: List<int>.from(json['genre_ids']),
-        id: json['id'],
-        originalLanguage: json['original_language'],
-        originalTitle: json['original_title'],
-        overview: json['overview'],
-        popularity: json['popularity'].toDouble(),
-        releaseDate: json['release_date'],
-        title: json['title'],
-        video: json['video'],
-        voteAverage: json['vote_average'].toDouble(),
-        voteCount: json['vote_count'],
-        backdropPath: json['backdrop_path'] ?? 'https://ih1.redbubble.net/image.980012480.5663/st,small,507x507-pad,600x600,f8f8f8.u3.jpg',
+      adult: json['adult'],
+      genreIds: List<int>.from(json['genre_ids']),
+      id: json['id'],
+      originalLanguage: json['original_language'],
+      originalTitle: json['original_title'],
+      overview: json['overview'],
+      popularity: json['popularity'].toDouble(),
+      releaseDate: json['release_date'],
+      title: json['title'],
+      video: json['video'],
+      voteAverage: json['vote_average'].toDouble(),
+      voteCount: json['vote_count'],
+      backdropPath: json['backdrop_path'] ?? 'https://ih1.redbubble.net/image.980012480.5663/st,small,507x507-pad,600x600,f8f8f8.u3.jpg',
     );
   }
 }

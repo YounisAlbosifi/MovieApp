@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../components/Text.dart';
-import 'package:movie_app/Main_Flow/movieFilter.dart';
+import 'package:movie_app/Screens/movieFilterScreen.dart';
 class FilterPicture extends StatelessWidget {
   FilterPicture({super.key,
     required this.imagePath,

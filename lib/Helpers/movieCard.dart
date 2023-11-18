@@ -13,7 +13,7 @@ class MovieCard extends StatelessWidget {
   final String posterPath;
   final List genreIds;
 
-  MovieCard({
+  const MovieCard({super.key,
     required this.title,
     required this.overview,
     required this.releaseDate,

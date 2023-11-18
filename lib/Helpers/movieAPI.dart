@@ -1,7 +1,6 @@
-import 'dart:convert';
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:movie_app/Classes/movieResult.dart';
 
+import '../Classes/movieResult.dart';
 import '../constants.dart';
 
 class Api {
@@ -15,6 +14,7 @@ class Api {
     required this.page
   });
 
+
   String? language; // DONE
   int? year; // On hold
   List<String>? withGenres; // DONE
@@ -23,15 +23,15 @@ class Api {
   String? searchName;// On hold
   int page;
 
-  String CallMovieFilterApi(){ /// THIS WILL RETURN A URL
+  Future<List<MovieResult>> CallMovieFilterApi() async{
+    List<MovieResult>? movies;/// THIS WILL RETURN A URL
     var string = StringBuffer();
     string.write(
-        "https://api.themoviedb.org/3/discover/movie?api_key=81a08eb3db0b620adcaf8a8fecc5c880&include_adult=false&include_video=false&language=en-US&page=${page}&sort_by=popularity.desc");
-
+        "https://api.themoviedb.org/3/discover/movie?api_key=81a08eb3db0b620adcaf8a8fecc5c880&include_adult=false&include_video=false&language=en-US&page=${page}&sort_by=popularity.desc"
+    );
     if(language != null){
       string.write("&with_original_language=$language");
     }
-
     if (withGenres != null) {
       string.write("&with_genres=");
       for (int i = 0; i < withGenres!.length; i++) {
@@ -41,21 +41,12 @@ class Api {
         print(string.toString());
       }
     }
-
-
     if(year != null){
       string.write("&primary_release_year=${year}");
     }
-
     if(voteAverage != null){
       string.write("&vote_average.gte=${voteAverage}");
     }
-
-    // ONLY PASS COUNTRY CODES PLEASE (ALPHA 2) https://www.iban.com/country-codes
-    // if(country != null){
-    //   string.write("&with_origin_country=${country}");
-    // }
-
     if(runtimeChoice != null) {
       if (runtimeChoice == "short") {
         string.write(
@@ -72,6 +63,20 @@ class Api {
     }
     String finalUrl = string.toString();
     print("final url is: $finalUrl");
-    return finalUrl;
+
+    var json = await getJson(url: finalUrl);
+    Movie movie = Movie.fromJson(json);
+    movies = movie.results;
+    return movies;
+  }
+
+  Future<List<MovieResult>> CallMovieByNameApi() async{
+    List<MovieResult>? movies;
+    String finalUrl = "https://api.themoviedb.org/3/search/movie?api_key=81a08eb3db0b620adcaf8a8fecc5c880&query=$searchName&include_adult=false&language=en-US&page=$page";
+
+    var json = await getJson(url: finalUrl);
+    Movie movie = Movie.fromJson(json);
+    movies = movie.results;
+    return movies;
   }
 }
