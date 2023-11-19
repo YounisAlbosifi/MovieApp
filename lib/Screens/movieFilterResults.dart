@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:movie_app/Classes/movieResult.dart';
 import 'package:movie_app/Helpers/movieCard.dart';
 
-class movieFilterResults extends StatelessWidget {
-  const movieFilterResults({required this.appliedFilters, this.movies, Key? key}) : super(key: key);
+class MovieFilterResults extends StatelessWidget {
+  const MovieFilterResults({required this.appliedFilters, this.movies, Key? key}) : super(key: key);
   final Map<String, dynamic>? appliedFilters;
   final List<MovieResult>? movies;
+  static String id = "FilterResults";
 
   @override
   Widget build(BuildContext context) {

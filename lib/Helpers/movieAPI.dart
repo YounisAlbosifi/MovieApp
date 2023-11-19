@@ -69,7 +69,6 @@ class Api {
     movies = movie.results;
     return movies;
   }
-
   Future<List<MovieResult>> CallMovieByNameApi() async{
     List<MovieResult>? movies;
     String finalUrl = "https://api.themoviedb.org/3/search/movie?api_key=81a08eb3db0b620adcaf8a8fecc5c880&query=$searchName&include_adult=false&language=en-US&page=$page";

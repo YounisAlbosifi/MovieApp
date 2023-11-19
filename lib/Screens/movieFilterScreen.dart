@@ -8,6 +8,7 @@ import '../components/Text.dart';
 import '../constants.dart';
 
 class MovieFilter extends StatefulWidget {
+  static String id = "Filter";
   const MovieFilter({super.key});
   @override
   State<MovieFilter> createState() => _MovieFilterState();
@@ -15,6 +16,7 @@ class MovieFilter extends StatefulWidget {
 
 class _MovieFilterState extends State<MovieFilter> {
   // -------------------------------------------------------------
+
   List<String> selectedGenres = [];
   String? selectedLanguage;
   double selectedRating = 3.0;
@@ -266,7 +268,7 @@ class _MovieFilterState extends State<MovieFilter> {
 
                       Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) {
-                          return movieFilterResults(
+                          return MovieFilterResults(
                             appliedFilters: appliedFilters,
                             movies: movies,
                           );

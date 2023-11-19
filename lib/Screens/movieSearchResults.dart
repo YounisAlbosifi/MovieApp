@@ -5,6 +5,7 @@ import '../Helpers/movieCard.dart';
 
 class movieSearchResults extends StatelessWidget {
   movieSearchResults({required this.movies, super.key});
+  static String id = "SearchResults";
   List<MovieResult> movies;
 
   @override

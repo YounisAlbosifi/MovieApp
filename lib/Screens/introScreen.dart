@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:movie_app/Screens/mainScreen.dart';
 
-class MainScreen extends StatelessWidget {
-  const MainScreen({Key? key}) : super(key: key);
+class IntroScreen extends StatelessWidget {
+  const IntroScreen({Key? key}) : super(key: key);
+  static String id = "Intro";
 
   @override
   Widget build(BuildContext context) {
@@ -28,9 +29,7 @@ class MainScreen extends StatelessWidget {
             // Movies
             GestureDetector(
               onTap: (){
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-                  return MovieScreen();
-                },));
+                Navigator.pushNamed(context, MovieScreen.id);
               },
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 20),

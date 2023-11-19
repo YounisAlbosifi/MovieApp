@@ -8,6 +8,7 @@ import 'movieSearchResults.dart';
 
 class MovieScreen extends StatefulWidget {
   MovieScreen({super.key});
+  static String id = "Main";
 
   @override
   State<MovieScreen> createState() => _MovieScreenState();
@@ -55,10 +56,6 @@ class _MovieScreenState extends State<MovieScreen> {
                       );
 
                       List<MovieResult> movies = await api.CallMovieByNameApi();
-                      print(movies[0].title);
-                      print(movies[0].overview);
-                      print(movies[0].title);
-
                       Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) {
                           return movieSearchResults(
@@ -162,9 +159,7 @@ class _MovieScreenState extends State<MovieScreen> {
                           shape: const StadiumBorder()
                       ),
                       onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-                          return const MovieFilter();
-                        },));
+                        Navigator.pushNamed(context, MovieFilter.id);
                       },
                       child: const CustomText(
                         "Search Filter",
