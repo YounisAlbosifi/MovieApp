@@ -3,11 +3,11 @@ import 'package:movie_app/Helpers/moviePoster.dart';
 import 'package:movie_app/Screens/movieFilterScreen.dart';
 import '../Classes/movieResult.dart';
 import '../Helpers/movieAPI.dart';
-import '../components/Text.dart';
+import '../Components//Text.dart';
 import 'movieSearchResults.dart';
 
 class MovieScreen extends StatefulWidget {
-  MovieScreen({super.key});
+  const MovieScreen({super.key});
   static String id = "Main";
 
   @override
